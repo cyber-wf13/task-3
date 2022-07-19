@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="content">
-      <form class="content__form form" @submit.prevent="handleSubmitForm">
+      <h2 class="content__title">
+        Элементов сохранено: {{ savedListItemsCount }}
+      </h2>
+      <form class="content__form form" @submit.enter.prevent="handleSubmitForm">
         <TextField
           class="form__field"
           title="Введите страну"
@@ -19,7 +22,7 @@
         </button>
       </form>
 
-      <ItemsField />
+      <ItemsField title="Список університетів" :listItems="universInfo" />
     </div>
   </div>
 </template>
@@ -35,6 +38,7 @@ export default {
     return {
       countryInput: "",
       universInfo: [],
+      savedListItemsCount: Number(localStorage.getItem("checkedItems")) || 0,
     };
   },
   methods: {
@@ -59,6 +63,7 @@ export default {
     handleResetForm() {
       this.countryInput = "";
       this.universInfo = [];
+      localStorage.clear();
     },
   },
 };
@@ -70,8 +75,14 @@ export default {
 .content {
   padding: 50px 0 0;
 
+  &__title {
+    color: $c-accent;
+    font-size: rem(20);
+    margin-bottom: rem(30);
+  }
+
   &__form {
-    margin-bottom: em(30);
+    margin-bottom: rem(30);
   }
 }
 
