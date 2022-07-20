@@ -46,6 +46,11 @@ export default {
     &:focus {
       background-color: #fff;
     }
+
+    @media (max-width: (map.get($breakpoints, "sm") - 0.02)) {
+      width: 100%;
+      flex: auto;
+    }
   }
 }
 </style>

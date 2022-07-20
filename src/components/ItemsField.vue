@@ -1,6 +1,6 @@
 <template>
-  <fieldset class="items-field">
-    <legend class="items-field__legend">{{ title }}</legend>
+  <div class="items-field">
+    <h4 class="items-field__title">{{ title }}</h4>
     <table class="items-field__table field-table">
       <thead class="field-table__head">
         <tr class="field-table__row field-table__head-row">
@@ -60,7 +60,7 @@
         </tr>
       </tbody>
     </table>
-  </fieldset>
+  </div>
 </template>
 <script>
 import TextField from "./TextField.vue";
@@ -135,10 +135,9 @@ export default {
 </script>
 <style lang="scss">
 .items-field {
-  border: 1px solid rgba($c-accent, 0.5);
-  border-radius: $radius;
+  overflow-x: auto;
 
-  &__legend {
+  &__title {
     font-weight: 500;
     font-size: rem(16);
     color: $c-accent;

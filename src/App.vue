@@ -5,6 +5,9 @@
         Элементов сохранено: {{ savedListItemsCount }}
       </h2>
       <form class="content__form form" @submit.enter.prevent="handleSubmitForm">
+        <span class="form__error-message" v-if="isError">{{
+          errorMessage
+        }}</span>
         <TextField
           class="form__field"
           title="Введите страну"
@@ -39,12 +42,16 @@ export default {
       countryInput: "",
       universInfo: [],
       savedListItemsCount: Number(localStorage.getItem("checkedItems")) || 0,
+      isError: false,
+      errorMessage: "Error!!",
     };
   },
   methods: {
     async getUnivers(country) {
       let query = `http://universities.hipolabs.com/search?country=${country}`;
-      const response = await fetch(query);
+      const response = await fetch(query).catch(() => {
+        this.generateErrorMessage("Проблемы с соединением");
+      });
 
       if (response.ok) {
         return response.json();
@@ -57,6 +64,9 @@ export default {
       this.getUnivers(this.countryInput).then((info) => {
         if (info.length != 0) {
           this.universInfo = [...info];
+          this.isError = false;
+        } else {
+          this.generateErrorMessage("Введите название страны");
         }
       });
     },
@@ -64,6 +74,10 @@ export default {
       this.countryInput = "";
       this.universInfo = [];
       localStorage.clear();
+    },
+    generateErrorMessage(text) {
+      this.errorMessage = text;
+      this.isError = true;
     },
   },
 };
@@ -92,9 +106,20 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
+  position: relative;
+
+  &__error-message {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    color: #f00;
+  }
 
   &__field {
     flex: 1 0 70%;
+    @media (max-width: (map.get($breakpoints, "sm") - 0.02)) {
+      flex: 1 0 100%;
+    }
   }
 
   &__button {
