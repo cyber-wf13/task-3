@@ -49,7 +49,7 @@ export default {
   methods: {
     async getUnivers(country) {
       let query = `http://universities.hipolabs.com/search?country=${country}`;
-      const response = await fetch(query).catch(() => {
+      const response = await fetch(query).catch((e) => {
         this.generateErrorMessage("Проблемы с соединением");
       });
 
